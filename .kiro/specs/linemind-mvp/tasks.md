@@ -323,33 +323,45 @@
 - [x] 17. MilpOptimizer 클래스 구현
 
 
+
   - [ ] 17.1 MilpOptimizer 클래스 기본 구조 및 데이터 로딩
     - `backend/optimizer.py`에 MilpOptimizer 클래스 추가
+
     - __init__ 메서드 작성 (DataLoader, SimpleForecaster 인스턴스 생성)
+
+
     - run_optimization 메서드 시작 (데이터 로드 및 주간 수요 집계)
     - _Requirements: 5.1, 5.2_
   
+
   - [ ] 17.2 MILP 모델 변수 정의
     - OR-Tools SCIP 솔버 생성
     - Q[l,m,w] 변수 정의 (생산량, 정수)
+
     - Y[l,m,w] 변수 정의 (생산 여부, 불리언)
+
     - _Requirements: 5.2_
   
   - [ ] 17.3 MILP 제약 조건 구현
     - 라인당 주간 단일 모델 제약 (Σ_m Y[l,m,w] ≤ 1)
+
     - 생산량-생산여부 연결 제약 (Q[l,m,w] ≤ Y[l,m,w] * capacity)
     - 수요 충족 제약 (Σ_l Q[l,m,w] ≥ demand[m,w])
     - 라인 적격성 제약 (eligible_models 확인)
     - _Requirements: 5.3, 5.4, 5.5_
+
   
   - [ ] 17.4 목적 함수 및 솔버 실행
     - 목적 함수 정의 (생산 비용 최소화, 단가 1000 가정)
+
     - 솔버 실행 (Solve 호출)
+
     - 결과 파싱 (mix_plan, KPI 계산)
     - 에러 핸들링 (해 없음, 솔버 없음)
     - _Requirements: 5.6, 5.7, 5.8_
 
-- [ ] 18. optimizer.py에서 MILP 사용하도록 전환
+- [x] 18. optimizer.py에서 MILP 사용하도록 전환
+
   - `backend/app.py`에서 StubOptimizer 대신 MilpOptimizer 사용
   - 또는 환경 변수로 전환 가능하도록 구현
   - 브라우저에서 MILP 최적화 결과 확인
@@ -380,32 +392,41 @@
 - [ ] 21. SchedulePage 컴포넌트 구현
   - [ ] 21.1 SchedulePage 컴포넌트 기본 구조 작성
     - `frontend/src/components/SchedulePage.tsx` 생성
+
     - 'use client' 지시어 추가
+
+
     - useState로 schedule, kpi, loading, error 상태 관리
     - TypeScript 인터페이스 정의 (ScheduleItem, ScheduleKPI)
     - _Requirements: 6.6_
   
+
   - [ ] 21.2 스케줄링 실행 함수 및 테이블 구현
     - runScheduling 함수 작성 (POST /api/schedule/run 호출, mix_plan 전달)
     - "스케줄링 실행" 버튼 추가
     - 스케줄 테이블 추가 (날짜, 라인, 교대, 작업자 ID, 작업자 이름)
     - _Requirements: 6.5, 6.6_
 
+
 - [ ] 22. OptimizePage에서 SchedulePage로 연결
   - OptimizePage에 "이 계획으로 스케줄링" 버튼 추가
+
   - 버튼 클릭 시 mixPlan을 전달하며 schedule 페이지로 이동
   - 홈 페이지에 "인력 스케줄링" 카드 추가
   - 브라우저에서 예측 → 믹스 → 스케줄링 전체 플로우 테스트
   - _Requirements: 6.6_
 
+
 - [ ] 23. CpsatScheduler 클래스 구현
   - [ ] 23.1 CpsatScheduler 클래스 기본 구조 및 데이터 준비
     - `backend/scheduler.py`에 CpsatScheduler 클래스 추가
     - __init__ 메서드 작성
+
     - run_cpsat_schedule 메서드 시작 (mix_plan 입력, 데이터 로드)
     - 필요 인원 산정 및 날짜/교대 리스트 생성
     - _Requirements: 7.1_
   
+
   - [ ] 23.2 CP-SAT 모델 변수 정의
     - OR-Tools CP-SAT 모델 생성
     - x[w,d,s] 변수 정의 (작업자-날짜-교대 근무 여부, 불리언)
