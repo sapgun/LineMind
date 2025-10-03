@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from data_loader import DataLoader
 from forecast import SimpleForecaster
 from optimizer import StubOptimizer, MilpOptimizer
-from scheduler import StubScheduler
+from scheduler import StubScheduler, CpsatScheduler
 import os
 from typing import List, Dict
 
@@ -44,9 +44,11 @@ forecaster = SimpleForecaster()
 use_milp = os.getenv('USE_MILP', 'true').lower() == 'true'
 optimizer = MilpOptimizer() if use_milp else StubOptimizer()
 
-# StubScheduler 인스턴스 생성
-# 인력 스케줄링 기능 제공
-scheduler = StubScheduler()
+# Scheduler 선택
+# 환경 변수 USE_CPSAT=true로 설정하면 CP-SAT 사용, 아니면 Stub 사용
+# 기본값은 CP-SAT 사용 (Phase 2)
+use_cpsat = os.getenv('USE_CPSAT', 'true').lower() == 'true'
+scheduler = CpsatScheduler() if use_cpsat else StubScheduler()
 
 # CORS (Cross-Origin Resource Sharing) 미들웨어 설정
 # 프론트엔드(localhost:3000)에서 백엔드 API를 호출할 수 있도록 허용
@@ -294,9 +296,13 @@ async def run_scheduling(mix_plan: List[Dict] = Body(...)):
             ]
         }
     """
-    # StubScheduler를 사용하여 스케줄링 실행
+    # Scheduler를 사용하여 스케줄링 실행
+    # USE_CPSAT 환경 변수에 따라 CpsatScheduler 또는 StubScheduler 사용
     # 모든 에러 핸들링은 scheduler 내부에서 처리됨
-    return scheduler.run_stub_schedule(mix_plan)
+    if use_cpsat:
+        return scheduler.run_cpsat_schedule(mix_plan)
+    else:
+        return scheduler.run_stub_schedule(mix_plan)
 
 
 # 애플리케이션 실행 진입점

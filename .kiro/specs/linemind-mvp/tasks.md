@@ -284,19 +284,25 @@
     - _Requirements: 4.6_
 
 
+
   
   - [ ] 14.2 최적화 실행 함수 및 KPI 카드 구현
     - runOptimization 함수 작성 (POST /api/mix/optimize 호출)
     - "최적화 실행" 버튼 추가
+
     - KPI 카드 4개 추가 (총 수요, 계획 생산, 충족률, 예상 비용)
+
+
     - _Requirements: 4.5, 4.7_
   
   - [ ] 14.3 차트 및 테이블 구현
     - 모델별 생산 비중 파이 차트 추가 (PieChart, Pie, Cell)
     - 라인별 계획 바 차트 추가 (BarChart, Bar)
+
     - 상세 계획 테이블 추가 (라인, 모델, 계획생산량, 가동률)
     - 한글 레이블 사용
     - _Requirements: 4.6, 4.7_
+
 
 - [ ] 15. 홈 페이지에 최적화 페이지 연결
   - `frontend/src/app/page.tsx` 수정
@@ -304,14 +310,19 @@
   - renderPage 함수에서 OptimizePage 렌더링
   - "생산 믹스" 카드 버튼 추가 (클릭 시 페이지 전환)
   - 브라우저에서 최적화 실행 및 차트 표시 확인
+
   - _Requirements: 4.6, 4.7_
 
 - [ ] 16. OR-Tools 설치
   - `backend` 폴더에서 `pip install ortools` 실행
   - requirements.txt 업데이트
+
+
   - _Requirements: 5.1_
 
-- [ ] 17. MilpOptimizer 클래스 구현
+- [x] 17. MilpOptimizer 클래스 구현
+
+
   - [ ] 17.1 MilpOptimizer 클래스 기본 구조 및 데이터 로딩
     - `backend/optimizer.py`에 MilpOptimizer 클래스 추가
     - __init__ 메서드 작성 (DataLoader, SimpleForecaster 인스턴스 생성)
