@@ -1,0 +1,8 @@
+worker_id,name,years,wage_per_hour,max_hours_week,prefer_night
+W001,김철수,5,15000,40,false
+W002,이영희,8,18000,35,true
+W003,박민수,2,12000,40,false
+W004,최영수,10,20000,40,true
+W005,정미영,3,14000,38,false
+W006,강동원,6,16000,40,false
+W007,송혜교,4,15000,40,true
