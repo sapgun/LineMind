@@ -1,7 +1,9 @@
-from_model,to_model,changeover_hours,changeover_cost
-ModelA,ModelB,2,50000
-ModelB,ModelA,2,50000
-ModelB,ModelC,3,80000
-ModelC,ModelB,3,80000
-ModelA,ModelC,4,100000
-ModelC,ModelA,4,100000
+from_model,to_model,changeover_hours,changeover_cost,line_id
+GV70,GV80,2,50000,L1
+GV80,GV70,2,50000,L1
+GV70,Palisade,3,80000,L1
+Palisade,GV70,3,80000,L1
+GV80,Palisade,4,100000,L1
+Palisade,GV80,4,100000,L1
+SantaFe,Tucson,2,50000,L2
+Tucson,SantaFe,2,50000,L2

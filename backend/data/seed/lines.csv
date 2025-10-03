@@ -1,4 +1,3 @@
 line_id,eligible_models,hours_per_shift,shifts_per_day,base_daily_capacity
-L1,"ModelA,ModelB",8,2,300
-L2,"ModelB,ModelC",8,2,400
-L3,"ModelA,ModelC",8,2,350
+L1,"GV70,GV80,Palisade",12,2,1800
+L2,"SantaFe,Tucson",12,2,1300
