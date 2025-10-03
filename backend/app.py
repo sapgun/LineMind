@@ -12,11 +12,14 @@ LineMind API - FastAPI 백엔드 애플리케이션
 - POST /api/schedule/run: 인력 스케줄링 실행
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 from data_loader import DataLoader
 from forecast import SimpleForecaster
-from optimizer import StubOptimizer
+from optimizer import StubOptimizer, MilpOptimizer
+from scheduler import StubScheduler
+import os
+from typing import List, Dict
 
 # FastAPI 애플리케이션 인스턴스 생성
 # title: API 문서에 표시될 제목
@@ -35,9 +38,15 @@ data_loader = DataLoader()
 # 생산량 예측 기능 제공
 forecaster = SimpleForecaster()
 
-# StubOptimizer 인스턴스 생성
-# 생산 믹스 최적화 기능 제공
-optimizer = StubOptimizer()
+# Optimizer 선택
+# 환경 변수 USE_MILP=true로 설정하면 MILP 사용, 아니면 Stub 사용
+# 기본값은 MILP 사용 (Phase 2)
+use_milp = os.getenv('USE_MILP', 'true').lower() == 'true'
+optimizer = MilpOptimizer() if use_milp else StubOptimizer()
+
+# StubScheduler 인스턴스 생성
+# 인력 스케줄링 기능 제공
+scheduler = StubScheduler()
 
 # CORS (Cross-Origin Resource Sharing) 미들웨어 설정
 # 프론트엔드(localhost:3000)에서 백엔드 API를 호출할 수 있도록 허용
@@ -181,7 +190,7 @@ async def run_optimization():
     생산 믹스 최적화 실행 엔드포인트
     
     예측 결과를 바탕으로 각 라인에 어떤 모델을 배정할지 결정합니다.
-    Phase 1에서는 간단한 균등 분배 방식을 사용합니다.
+    MILP(Mixed Integer Linear Programming)를 사용하여 최적화를 수행합니다.
     
     Returns:
         dict: 최적화 결과
@@ -226,9 +235,68 @@ async def run_optimization():
             }
         }
     """
-    # StubOptimizer를 사용하여 최적화 실행
+    # Optimizer를 사용하여 최적화 실행
+    # USE_MILP 환경 변수에 따라 MilpOptimizer 또는 StubOptimizer 사용
     # 모든 에러 핸들링은 optimizer 내부에서 처리됨
     return optimizer.run_optimization()
+
+
+@app.post("/api/schedule/run")
+async def run_scheduling(mix_plan: List[Dict] = Body(...)):
+    """
+    인력 스케줄링 실행 엔드포인트
+    
+    생산 계획(mix_plan)을 바탕으로 필요한 작업자를 배정합니다.
+    Phase 1에서는 간단한 Greedy 방식(연차 순)을 사용합니다.
+    
+    Args:
+        mix_plan (List[Dict]): 생산 계획 리스트
+            - period (int): 주차
+            - line_id (str): 라인 ID
+            - model (str): 모델명
+            - planned_units (int): 계획 생산량
+    
+    Returns:
+        dict: 스케줄링 결과
+            성공 시:
+                - status (str): "success"
+                - schedule (list): 스케줄 리스트
+                    - date (str): 날짜
+                    - line_id (str): 라인 ID
+                    - shift (str): 교대
+                    - worker_id (str): 작업자 ID
+                    - worker_name (str): 작업자 이름
+            실패 시:
+                - status (str): "error"
+                - message (str): 에러 메시지
+    
+    Example:
+        POST /api/schedule/run
+        Body: [
+            {
+                "period": 1,
+                "line_id": "L1",
+                "model": "ModelA",
+                "planned_units": 700
+            }
+        ]
+        Response: {
+            "status": "success",
+            "schedule": [
+                {
+                    "date": "Week 1, Day 1",
+                    "line_id": "L1",
+                    "shift": "Day",
+                    "worker_id": "W001",
+                    "worker_name": "김철수"
+                },
+                ...
+            ]
+        }
+    """
+    # StubScheduler를 사용하여 스케줄링 실행
+    # 모든 에러 핸들링은 scheduler 내부에서 처리됨
+    return scheduler.run_stub_schedule(mix_plan)
 
 
 # 애플리케이션 실행 진입점

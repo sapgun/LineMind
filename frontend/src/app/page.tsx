@@ -10,6 +10,7 @@
 import { useEffect, useState } from 'react'
 import ForecastPage from '@/components/ForecastPage'
 import OptimizePage from '@/components/OptimizePage'
+import SchedulePage from '@/components/SchedulePage'
 
 export default function Home() {
   // 현재 페이지를 관리하는 state
@@ -59,6 +60,8 @@ export default function Home() {
         return <ForecastPage />
       case 'optimize':
         return <OptimizePage />
+      case 'schedule':
+        return <SchedulePage />
       case 'home':
       default:
         return renderHomePage()
@@ -130,13 +133,16 @@ export default function Home() {
               <p className="text-xs text-green-600 mt-2 font-medium">클릭하여 시작 →</p>
             </button>
 
-            {/* 스케줄링 카드 (준비 중) */}
-            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            {/* 스케줄링 카드 (활성화) */}
+            <button
+              onClick={() => setCurrentPage('schedule')}
+              className="border border-purple-300 rounded-lg p-4 bg-purple-50 hover:bg-purple-100 transition-colors text-left"
+            >
               <div className="text-3xl mb-2">👥</div>
               <h3 className="font-bold text-gray-800 mb-1">인력 스케줄링</h3>
               <p className="text-sm text-gray-600">작업자 배정 최적화</p>
-              <p className="text-xs text-gray-400 mt-2">준비 중...</p>
-            </div>
+              <p className="text-xs text-purple-600 mt-2 font-medium">클릭하여 시작 →</p>
+            </button>
           </div>
         </div>
       </div>

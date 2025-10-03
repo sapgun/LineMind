@@ -202,59 +202,88 @@
     - 에러 메시지 표시 영역 추가
 
 
+
     - _Requirements: 3.5_
   
   - [ ] 10.3 차트 및 요약 통계 구현
     - formatChartData 함수 작성 (날짜 포맷 변환)
     - 모델별 LineChart 렌더링 (예측값, 상한, 하한 라인)
+
+
     - 요약 통계 카드 3개 추가 (평균 예측, 예측 기간, 총 예측량)
     - 한글 레이블 사용
     - _Requirements: 3.5, 3.6_
+
+
+
 
 - [ ] 11. 홈 페이지에 예측 페이지 연결
   - `frontend/src/app/page.tsx` 수정
   - currentPage 상태에 'forecast' 추가
   - renderPage 함수에서 ForecastPage 렌더링
+
+
   - "생산량 예측" 카드 버튼 추가 (클릭 시 페이지 전환)
   - "홈으로 돌아가기" 버튼 추가
   - 브라우저에서 예측 실행 및 차트 표시 확인
   - _Requirements: 3.5, 3.6_
 
+
+
 - [ ] 12. StubOptimizer 클래스 구현
   - [ ] 12.1 StubOptimizer 클래스 기본 구조 작성
     - `backend/optimizer.py` 생성
     - StubOptimizer 클래스 정의 (__init__에서 DataLoader, SimpleForecaster 인스턴스 생성)
+
+
     - _Requirements: 4.1_
   
   - [ ] 12.2 simple_line_assignment 메서드 구현
     - 라인별 지원 모델 파싱 (eligible_models 쉼표 분리)
+
+
+
     - 예측 데이터에서 주간 총 수요 계산 (첫 7일 합계)
     - 각 모델을 지원 가능한 라인에 균등 분배
     - mix_plan 리스트 생성 (period, line_id, model, planned_units, line_utilization)
+
     - KPI 계산 (total_demand, total_planned, fulfillment_rate)
+
+
     - _Requirements: 4.2, 4.3, 4.4_
   
-  - [ ] 12.3 run_optimization 메서드 및 테스트 함수 구현
+  - [x] 12.3 run_optimization 메서드 및 테스트 함수 구현
+
+
     - 예측 실행 후 simple_line_assignment 호출
     - 결과 딕셔너리 반환 (status, mix_plan, kpi)
     - test_optimizer() 함수 작성 (총 생산량, 충족률 출력)
     - 스크립트 실행하여 최적화 결과 확인
     - _Requirements: 4.1, 4.5_
 
+
+
 - [ ] 13. 믹스 최적화 API 엔드포인트 추가
   - `backend/app.py`에 StubOptimizer 인스턴스 생성
   - `POST /api/mix/optimize` 엔드포인트 구현
   - optimizer.run_optimization() 호출 및 결과 반환
   - curl 또는 Postman으로 엔드포인트 테스트
+
   - _Requirements: 4.5_
+
+
 
 - [ ] 14. OptimizePage 컴포넌트 구현
   - [ ] 14.1 OptimizePage 컴포넌트 기본 구조 작성
     - `frontend/src/components/OptimizePage.tsx` 생성
     - 'use client' 지시어 추가
+
+
     - useState로 mixPlan, kpi, loading, error 상태 관리
     - TypeScript 인터페이스 정의 (MixPlan, KPI)
     - _Requirements: 4.6_
+
+
   
   - [ ] 14.2 최적화 실행 함수 및 KPI 카드 구현
     - runOptimization 함수 작성 (POST /api/mix/optimize 호출)
