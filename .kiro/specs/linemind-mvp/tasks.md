@@ -116,23 +116,34 @@
     - 각 파일의 필수 컬럼 리스트 정의
     - test_data_loading() 함수 작성 (성공 시 행 개수 출력)
     - 스크립트 실행하여 "✅ 모든 CSV 로드 성공" 확인
+
+
     - _Requirements: 2.1-2.7_
 
-- [ ] 6. 데이터 상태 API 엔드포인트 추가
+- [x] 6. 데이터 상태 API 엔드포인트 추가
+
   - `backend/app.py`에 DataLoader 인스턴스 생성
+
+
   - `GET /api/data/status` 엔드포인트 구현
   - try-except로 에러 핸들링 (status: error 반환)
   - 성공 시 각 데이터셋의 행 개수 반환
   - 브라우저 또는 curl로 엔드포인트 테스트
   - _Requirements: 2.7_
 
+
+
 - [ ] 7. SimpleForecaster 클래스 구현
   - [ ] 7.1 SimpleForecaster 클래스 기본 구조 작성
     - `backend/forecast.py` 생성
+
+
     - SimpleForecaster 클래스 정의 (__init__에서 DataLoader 인스턴스 생성)
     - _Requirements: 3.1_
   
-  - [ ] 7.2 moving_average_forecast 메서드 구현
+  - [x] 7.2 moving_average_forecast 메서드 구현
+
+
     - 특정 모델의 과거 데이터 필터링
     - 데이터 없으면 기본값 100 units/day로 예측 생성
     - 날짜별 총 생산량 계산 및 최근 7일 이동평균 계산
@@ -140,38 +151,57 @@
     - 신뢰구간 계산 (예측값 * 0.8, 예측값 * 1.2)
     - DataFrame 반환 (date, model, forecast_units, conf_lo, conf_hi)
     - _Requirements: 3.1, 3.2, 3.3_
+
   
+
+
   - [ ] 7.3 run_forecast_all_models 메서드 및 테스트 함수 구현
     - 모든 모델에 대해 예측 실행
     - 결과를 딕셔너리로 반환 (status, forecasts, message)
+
+
     - test_forecast() 함수 작성 (모델별 예측 일수 출력)
     - 스크립트 실행하여 예측 결과 확인
     - _Requirements: 3.4_
 
 - [ ] 8. 예측 API 엔드포인트 추가
   - `backend/app.py`에 SimpleForecaster 인스턴스 생성
+
+
   - `POST /api/forecast/run` 엔드포인트 구현
   - forecaster.run_forecast_all_models() 호출 및 결과 반환
   - curl 또는 Postman으로 엔드포인트 테스트
   - _Requirements: 3.4_
 
+
+
+
 - [ ] 9. 프론트엔드에 recharts 설치
   - `frontend` 폴더에서 `npm install recharts` 실행
   - package.json에 recharts 의존성 추가 확인
+
   - _Requirements: 3.5_
+
+
 
 - [ ] 10. ForecastPage 컴포넌트 구현
   - [ ] 10.1 ForecastPage 컴포넌트 기본 구조 작성
     - `frontend/src/components/ForecastPage.tsx` 생성
     - 'use client' 지시어 추가
+
+
     - useState로 forecasts, loading, error 상태 관리
     - TypeScript 인터페이스 정의 (ForecastData)
     - _Requirements: 3.5_
   
+
+
   - [ ] 10.2 예측 실행 함수 및 UI 구현
     - runForecast 함수 작성 (POST /api/forecast/run 호출)
     - "예측 실행" 버튼 추가 (loading 중 비활성화)
     - 에러 메시지 표시 영역 추가
+
+
     - _Requirements: 3.5_
   
   - [ ] 10.3 차트 및 요약 통계 구현

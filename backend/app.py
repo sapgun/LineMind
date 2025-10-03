@@ -16,6 +16,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from data_loader import DataLoader
 from forecast import SimpleForecaster
+from optimizer import StubOptimizer
 
 # FastAPI 애플리케이션 인스턴스 생성
 # title: API 문서에 표시될 제목
@@ -33,6 +34,10 @@ data_loader = DataLoader()
 # SimpleForecaster 인스턴스 생성
 # 생산량 예측 기능 제공
 forecaster = SimpleForecaster()
+
+# StubOptimizer 인스턴스 생성
+# 생산 믹스 최적화 기능 제공
+optimizer = StubOptimizer()
 
 # CORS (Cross-Origin Resource Sharing) 미들웨어 설정
 # 프론트엔드(localhost:3000)에서 백엔드 API를 호출할 수 있도록 허용
@@ -168,6 +173,62 @@ async def run_forecast():
     # SimpleForecaster를 사용하여 예측 실행
     # 모든 에러 핸들링은 forecaster 내부에서 처리됨
     return forecaster.run_forecast_all_models()
+
+
+@app.post("/api/mix/optimize")
+async def run_optimization():
+    """
+    생산 믹스 최적화 실행 엔드포인트
+    
+    예측 결과를 바탕으로 각 라인에 어떤 모델을 배정할지 결정합니다.
+    Phase 1에서는 간단한 균등 분배 방식을 사용합니다.
+    
+    Returns:
+        dict: 최적화 결과
+            성공 시:
+                - status (str): "success"
+                - mix_plan (list): 생산 계획
+                    - period (int): 주차
+                    - line_id (str): 라인 ID
+                    - model (str): 모델명
+                    - planned_units (int): 계획 생산량
+                    - line_utilization (float): 라인 가동률
+                - kpi (dict): 핵심 성과 지표
+                    - total_demand (int): 총 수요
+                    - total_planned (int): 계획 생산량
+                    - fulfillment_rate (float): 수요 충족률 (%)
+                    - total_changeovers (int): 체인지오버 횟수
+                    - estimated_cost (int): 예상 비용
+            실패 시:
+                - status (str): "error"
+                - message (str): 에러 메시지
+    
+    Example:
+        POST /api/mix/optimize
+        Response: {
+            "status": "success",
+            "mix_plan": [
+                {
+                    "period": 1,
+                    "line_id": "L1",
+                    "model": "ModelA",
+                    "planned_units": 850,
+                    "line_utilization": 0.85
+                },
+                ...
+            ],
+            "kpi": {
+                "total_demand": 3000,
+                "total_planned": 3000,
+                "fulfillment_rate": 100.0,
+                "total_changeovers": 0,
+                "estimated_cost": 3000000
+            }
+        }
+    """
+    # StubOptimizer를 사용하여 최적화 실행
+    # 모든 에러 핸들링은 optimizer 내부에서 처리됨
+    return optimizer.run_optimization()
 
 
 # 애플리케이션 실행 진입점

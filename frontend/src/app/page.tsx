@@ -8,8 +8,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import ForecastPage from '@/components/ForecastPage'
+import OptimizePage from '@/components/OptimizePage'
 
 export default function Home() {
+  // 현재 페이지를 관리하는 state
+  // 'home': 홈 대시보드, 'forecast': 예측 페이지, 'optimize': 최적화 페이지, 'schedule': 스케줄링 페이지
+  const [currentPage, setCurrentPage] = useState<'home' | 'forecast' | 'optimize' | 'schedule'>('home')
+  
   // API 연결 상태를 저장하는 state
   // 초기값은 "연결 확인 중..."
   const [apiStatus, setApiStatus] = useState<string>('연결 확인 중...')
@@ -42,7 +48,27 @@ export default function Home() {
     checkApiHealth()
   }, []) // 빈 의존성 배열: 컴포넌트 마운트 시 한 번만 실행
 
-  return (
+  /**
+   * 페이지 렌더링 함수
+   * 
+   * currentPage state에 따라 적절한 페이지 컴포넌트를 렌더링합니다.
+   */
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'forecast':
+        return <ForecastPage />
+      case 'optimize':
+        return <OptimizePage />
+      case 'home':
+      default:
+        return renderHomePage()
+    }
+  }
+
+  /**
+   * 홈 페이지 렌더링 함수
+   */
+  const renderHomePage = () => (
     <main className="min-h-screen p-8 bg-gradient-to-b from-gray-50 to-gray-100">
       {/* 페이지 헤더 */}
       <div className="max-w-6xl mx-auto">
@@ -82,21 +108,27 @@ export default function Home() {
             주요 기능
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* 예측 기능 카드 (준비 중) */}
-            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            {/* 예측 기능 카드 (활성화) */}
+            <button
+              onClick={() => setCurrentPage('forecast')}
+              className="border border-blue-300 rounded-lg p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-left"
+            >
               <div className="text-3xl mb-2">📊</div>
               <h3 className="font-bold text-gray-800 mb-1">생산량 예측</h3>
               <p className="text-sm text-gray-600">미래 수요 예측</p>
-              <p className="text-xs text-gray-400 mt-2">준비 중...</p>
-            </div>
+              <p className="text-xs text-blue-600 mt-2 font-medium">클릭하여 시작 →</p>
+            </button>
 
-            {/* 믹스 최적화 카드 (준비 중) */}
-            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            {/* 믹스 최적화 카드 (활성화) */}
+            <button
+              onClick={() => setCurrentPage('optimize')}
+              className="border border-green-300 rounded-lg p-4 bg-green-50 hover:bg-green-100 transition-colors text-left"
+            >
               <div className="text-3xl mb-2">⚙️</div>
               <h3 className="font-bold text-gray-800 mb-1">생산 믹스</h3>
               <p className="text-sm text-gray-600">라인별 최적 배분</p>
-              <p className="text-xs text-gray-400 mt-2">준비 중...</p>
-            </div>
+              <p className="text-xs text-green-600 mt-2 font-medium">클릭하여 시작 →</p>
+            </button>
 
             {/* 스케줄링 카드 (준비 중) */}
             <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
@@ -109,5 +141,24 @@ export default function Home() {
         </div>
       </div>
     </main>
+  )
+
+  return (
+    <>
+      {/* 홈이 아닌 페이지에서는 "홈으로 돌아가기" 버튼 표시 */}
+      {currentPage !== 'home' && (
+        <div className="fixed top-4 left-4 z-50">
+          <button
+            onClick={() => setCurrentPage('home')}
+            className="bg-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition-shadow text-blue-600 hover:text-blue-700 font-medium"
+          >
+            ← 홈으로 돌아가기
+          </button>
+        </div>
+      )}
+      
+      {/* 현재 페이지 렌더링 */}
+      {renderPage()}
+    </>
   )
 }
